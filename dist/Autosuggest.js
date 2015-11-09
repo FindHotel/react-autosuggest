@@ -10,7 +10,7 @@ var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = 
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -61,7 +61,8 @@ var Autosuggest = (function (_Component) {
       cache: _react.PropTypes.bool, // Set it to false to disable in-memory caching
       id: _react.PropTypes.string, // Used in aria-* attributes. If multiple Autosuggest's are rendered on a page, they must have unique ids.
       scrollBar: _react.PropTypes.bool, // Set it to true when the suggestions container can have a scroll bar
-      theme: _react.PropTypes.object // Custom theme. See: https://github.com/markdalgleish/react-themeable
+      theme: _react.PropTypes.object, // Custom theme. See: https://github.com/markdalgleish/react-themeable
+      sectionNameRenderer: _react.PropTypes.func // Optional function to be used to override the default renderer of section name (used only for multiple sections)
     },
     enumerable: true
   }, {
@@ -620,10 +621,12 @@ var Autosuggest = (function (_Component) {
             ref: 'suggestions',
             role: 'listbox' }),
           this.state.suggestions.map(function (section, sectionIndex) {
+            var sectionNameRender = _this6.props.sectionNameRenderer ? _this6.props.sectionNameRenderer(section) : section.sectionName;
+
             var sectionName = section.sectionName ? _react2['default'].createElement(
               'div',
               theme('sectionName-' + sectionIndex, 'sectionName'),
-              section.sectionName
+              sectionNameRender
             ) : null;
 
             return section.suggestions.length === 0 ? null : _react2['default'].createElement(
